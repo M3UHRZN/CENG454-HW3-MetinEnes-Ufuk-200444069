@@ -3,5 +3,5 @@ using UnityEngine.AI;
 
 public interface IEnemyMovement
 {
-    void Execute(NavMeshAgent agent, Transform target);
+    void Execute(NavMeshAgent agent, Transform player, Transform core);
 }
