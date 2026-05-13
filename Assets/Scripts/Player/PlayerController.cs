@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     private Rigidbody _rb;
     private IWeapon _weapon;
     private Camera _mainCamera;
+    private PlayerAnimationController _animController;
 
     private InputSystem_Actions _inputActions;
 
@@ -25,6 +26,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         _rb = GetComponent<Rigidbody>();
         _weapon = GetComponentInChildren<IWeapon>();
         _mainCamera = Camera.main;
+        _animController = GetComponent<PlayerAnimationController>();
         _rb.constraints = RigidbodyConstraints.FreezeRotation;
         _currentHealth = maxHealth;
         _inputActions = new InputSystem_Actions();
@@ -38,6 +40,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         if (_currentHealth <= 0f)
         {
             _isDead = true;
+            _animController?.SetDead();
             GameEventBus.RaiseGameOver(false);
         }
     }
@@ -56,7 +59,10 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         AimAtMouse();
 
-        if (_inputActions.Player.Attack.IsPressed())
+        bool pressing = _inputActions.Player.Attack.IsPressed();
+        _animController?.SetShooting(pressing);
+
+        if (pressing)
         {
             FireWeapon();
         }

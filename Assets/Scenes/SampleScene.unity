@@ -3145,6 +3145,7 @@ MonoBehaviour:
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  maxHealth: 100
 --- !u!54 &897675162
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3206,7 +3207,7 @@ GameObject:
   - component: {fileID: 1514315254}
   - component: {fileID: 1514315253}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: DamageDebugger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3224,7 +3225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb4dd78a6c51bee4981593b875c031b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DebugDamager
-  target: {fileID: 609737054}
+  target: {fileID: 897675158}
   damageAmount: 10
 --- !u!4 &1514315254
 Transform:
@@ -7502,10 +7503,10 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 330585546}
+  - {fileID: 573584870}
   - {fileID: 410087041}
   - {fileID: 832575519}
   - {fileID: 1734126379}
-  - {fileID: 573584870}
   - {fileID: 897675159}
   - {fileID: 609737061}
   - {fileID: 1514315254}
