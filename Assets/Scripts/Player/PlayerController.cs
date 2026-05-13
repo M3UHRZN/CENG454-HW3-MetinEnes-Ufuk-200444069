@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
@@ -10,6 +11,8 @@ public class PlayerController : MonoBehaviour
     private IWeapon _weapon;
     private Camera _mainCamera;
 
+    private InputSystem_Actions _inputActions;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
@@ -18,13 +21,25 @@ public class PlayerController : MonoBehaviour
 
         // Rigidbody fizik ayarları: rotation'ı dondur, gravity'yi koru
         _rb.constraints = RigidbodyConstraints.FreezeRotation;
+
+        _inputActions = new InputSystem_Actions();
+    }
+
+    private void OnEnable()
+    {
+        _inputActions.Player.Enable();
+    }
+
+    private void OnDisable()
+    {
+        _inputActions.Player.Disable();
     }
 
     private void Update()
     {
         AimAtMouse();
 
-        if (Input.GetMouseButton(0))
+        if (_inputActions.Player.Attack.IsPressed())
         {
             FireWeapon();
         }
@@ -37,10 +52,9 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        float horizontal = Input.GetAxisRaw("Horizontal");
-        float vertical   = Input.GetAxisRaw("Vertical");
+        Vector2 input = _inputActions.Player.Move.ReadValue<Vector2>();
 
-        Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
+        Vector3 direction = new Vector3(input.x, 0f, input.y).normalized;
         Vector3 velocity  = direction * moveSpeed;
 
         // Y hızını koru (yerçekimi çalışsın)
@@ -50,8 +64,10 @@ public class PlayerController : MonoBehaviour
     private void AimAtMouse()
     {
         if (_mainCamera == null) return;
+        if (Mouse.current == null) return;
 
-        Ray ray = _mainCamera.ScreenPointToRay(Input.mousePosition);
+        Vector2 mousePos = Mouse.current.position.ReadValue();
+        Ray ray = _mainCamera.ScreenPointToRay(mousePos);
 
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundLayerMask))
         {
@@ -68,8 +84,13 @@ public class PlayerController : MonoBehaviour
 
     private void FireWeapon()
     {
-        if (_weapon == null) return;
+        if (_weapon == null)
+        {
+            Debug.LogWarning("[PlayerController] FireWeapon çağrıldı ama _weapon null!");
+            return;
+        }
 
+        Debug.Log($"[PlayerController] Fire! Yön: {transform.forward}");
         _weapon.Fire(transform.forward);
     }
 }
