@@ -2,10 +2,17 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDamageable
 {
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private LayerMask groundLayerMask;
+    [SerializeField] private float maxHealth = 100f;
+
+    public float Health => _currentHealth;
+    public float MaxHealth => maxHealth;
+
+    private float _currentHealth;
+    private bool _isDead;
 
     private Rigidbody _rb;
     private IWeapon _weapon;
@@ -18,11 +25,21 @@ public class PlayerController : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _weapon = GetComponentInChildren<IWeapon>();
         _mainCamera = Camera.main;
-
-        // Rigidbody fizik ayarları: rotation'ı dondur, gravity'yi koru
         _rb.constraints = RigidbodyConstraints.FreezeRotation;
-
+        _currentHealth = maxHealth;
         _inputActions = new InputSystem_Actions();
+    }
+
+    public void TakeDamage(float amount)
+    {
+        if (_isDead) return;
+        _currentHealth = Mathf.Max(0f, _currentHealth - amount);
+        Debug.Log($"[Player] TakeDamage {amount} → HP: {_currentHealth}/{maxHealth}");
+        if (_currentHealth <= 0f)
+        {
+            _isDead = true;
+            GameEventBus.RaiseGameOver(false);
+        }
     }
 
     private void OnEnable()
