@@ -26,6 +26,7 @@ public class Bullet : MonoBehaviour, IPoolable
 
     public void OnSpawn()
     {
+        _returned = false;
         _timer = lifetime;
         _rb.linearVelocity = transform.forward * speed;
         gameObject.SetActive(true);
@@ -37,11 +38,13 @@ public class Bullet : MonoBehaviour, IPoolable
         gameObject.SetActive(false);
     }
 
+    private bool _returned;
+
     private void Update()
     {
         _timer -= Time.deltaTime;
         if (_timer <= 0f)
-            _pool?.ReturnBullet(this);
+            Return();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -50,7 +53,14 @@ public class Bullet : MonoBehaviour, IPoolable
         if (target != null)
         {
             target.TakeDamage(damage);
-            _pool?.ReturnBullet(this);
+            Return();
         }
+    }
+
+    private void Return()
+    {
+        if (_returned) return;
+        _returned = true;
+        _pool?.ReturnBullet(this);
     }
 }
