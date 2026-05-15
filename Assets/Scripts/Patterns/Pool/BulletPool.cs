@@ -3,6 +3,8 @@ using UnityEngine.Pool;
 
 public class BulletPool : MonoBehaviour, IProjectileLauncher
 {
+    public static BulletPool Instance { get; private set; }
+
     [SerializeField] private Bullet bulletPrefab;
     [SerializeField] private int defaultCapacity = 20;
     [SerializeField] private int maxSize = 50;
@@ -11,25 +13,33 @@ public class BulletPool : MonoBehaviour, IProjectileLauncher
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+
         _pool = new ObjectPool<Bullet>(
             createFunc:      CreateBullet,
-            actionOnGet:     OnGetBullet,
-            actionOnRelease: OnReleaseBullet,
-            actionOnDestroy: OnDestroyBullet,
+            actionOnGet:     _ => { },
+            actionOnRelease: b => b.gameObject.SetActive(false),
+            actionOnDestroy: b => Destroy(b.gameObject),
             collectionCheck: true,
             defaultCapacity: defaultCapacity,
-            maxSize: maxSize
+            maxSize:         maxSize
         );
     }
 
-    // IProjectileLauncher
+    private void OnDestroy()
+    {
+        if (Instance == this) Instance = null;
+    }
+
     public void Launch(Vector3 origin, Vector3 direction)
     {
         Bullet bullet = _pool.Get();
-        bullet.transform.SetPositionAndRotation(
-            origin,
-            Quaternion.LookRotation(direction)
-        );
+        bullet.transform.SetPositionAndRotation(origin, Quaternion.LookRotation(direction));
         bullet.OnSpawn();
     }
 
@@ -41,12 +51,6 @@ public class BulletPool : MonoBehaviour, IProjectileLauncher
 
     private Bullet CreateBullet()
     {
-        Bullet b = Instantiate(bulletPrefab, transform);
-        b.Init(this);
-        return b;
+        return Instantiate(bulletPrefab, transform);
     }
-
-    private void OnGetBullet(Bullet b)     => b.gameObject.SetActive(true);
-    private void OnReleaseBullet(Bullet b)  => b.gameObject.SetActive(false);
-    private void OnDestroyBullet(Bullet b)  => Destroy(b.gameObject);
 }
