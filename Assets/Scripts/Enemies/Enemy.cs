@@ -55,6 +55,15 @@ public class Enemy : MonoBehaviour, IDamageable, IPoolable
             _playerTransform = playerGO.transform;
         else
             Debug.LogWarning("[Enemy] No GameObject with tag 'Player' found in scene.");
+
+        if (coreTransform == null)
+        {
+            GameObject coreGO = GameObject.FindWithTag("Core");
+            if (coreGO != null)
+                coreTransform = coreGO.transform;
+            else
+                Debug.LogWarning("[Enemy] No GameObject with tag 'Core' found in scene.");
+        }
     }
 
     private void Update()
