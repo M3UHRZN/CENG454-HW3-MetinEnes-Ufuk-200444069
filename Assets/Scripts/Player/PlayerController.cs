@@ -48,11 +48,20 @@ public class PlayerController : MonoBehaviour, IDamageable
     private void OnEnable()
     {
         _inputActions.Player.Enable();
+        GameEventBus.OnGameOver += HandleGameOver;
     }
 
     private void OnDisable()
     {
         _inputActions.Player.Disable();
+        GameEventBus.OnGameOver -= HandleGameOver;
+    }
+
+    private void HandleGameOver(bool playerWon)
+    {
+        enabled = false;
+        _rb.linearVelocity = Vector3.zero;
+        _animController?.SetShooting(false);
     }
 
     private void Update()

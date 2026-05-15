@@ -46,7 +46,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 5
+  m_Speed: 6
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -72,6 +72,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   maxHealth: 30
   movementStrategyBehaviour: {fileID: 4095090261841648726}
+  attackBehaviourBehaviour: {fileID: 0}
   coreTransform: {fileID: 0}
 --- !u!114 &4095090261841648726
 MonoBehaviour:

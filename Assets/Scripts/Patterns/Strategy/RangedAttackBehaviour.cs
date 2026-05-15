@@ -1,36 +1,24 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class RangedAttackBehaviour : MonoBehaviour, IEnemyAttack
+public class RangedAttackBehaviour : MonoBehaviour, IEnemyAttack, IWeapon
 {
-    [SerializeField] private float firingRange    = 8f;
-    [SerializeField] private float attackCooldown = 2f;
-    [SerializeField] private float fireHeight     = 1f;
+    [SerializeField] private float firingRange = 8f;
+    [SerializeField] private EnemyWeapon weapon;
 
-    private float _timer;
+    public float Cooldown => weapon != null ? weapon.Cooldown : 0f;
+
+    public void Fire(Vector3 direction) => weapon?.Fire(direction);
 
     public void Execute(NavMeshAgent agent, Transform player, Transform core)
     {
-        if (agent == null || player == null) return;
+        if (agent == null || player == null || weapon == null) return;
 
-        _timer -= Time.deltaTime;
+        float dist = Vector3.Distance(agent.transform.position, player.position);
+        if (dist > firingRange) return;
 
-        float distToPlayer = Vector3.Distance(agent.transform.position, player.position);
-        if (distToPlayer > firingRange) return;
-
-        if (_timer <= 0f)
-        {
-            _timer = attackCooldown;
-            FireAt(agent.transform.position, player.position);
-        }
-    }
-
-    private void FireAt(Vector3 enemyBase, Vector3 playerPos)
-    {
-        Vector3 origin    = enemyBase + Vector3.up * fireHeight;
-        Vector3 targetXZ  = new Vector3(playerPos.x, origin.y, playerPos.z);
-        Vector3 direction = (targetXZ - origin).normalized;
-
-        BulletPool.Instance.Launch(origin, direction, gameObject.name);
+        Vector3 dir = player.position - agent.transform.position;
+        dir.y = 0f;
+        Fire(dir.normalized);
     }
 }
