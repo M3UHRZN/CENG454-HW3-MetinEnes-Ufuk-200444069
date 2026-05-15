@@ -26,6 +26,8 @@ public class Enemy : MonoBehaviour, IDamageable, IPoolable
 
     private void Awake()
     {
+        _health = maxHealth;
+
         _agent = GetComponent<NavMeshAgent>();
         if (movementStrategyBehaviour != null)
             _movementStrategy = movementStrategyBehaviour as IEnemyMovement;

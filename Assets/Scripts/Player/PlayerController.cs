@@ -112,8 +112,6 @@ public class PlayerController : MonoBehaviour, IDamageable
             Debug.LogWarning("[PlayerController] FireWeapon çağrıldı ama _weapon null!");
             return;
         }
-
-        Debug.Log($"[PlayerController] Fire! Yön: {transform.forward}");
         _weapon.Fire(transform.forward);
     }
 }
