@@ -1,34 +1,42 @@
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class BulletPool : MonoBehaviour, IProjectileLauncher
+[System.Serializable]
+public struct BulletPoolEntry
+{
+    public Bullet prefab;
+    public int    defaultCapacity;
+    public int    maxSize;
+}
+
+public class BulletPool : MonoBehaviour
 {
     public static BulletPool Instance { get; private set; }
 
-    [SerializeField] private Bullet bulletPrefab;
-    [SerializeField] private int defaultCapacity = 20;
-    [SerializeField] private int maxSize = 50;
+    [SerializeField] private BulletPoolEntry[] entries;
 
-    private ObjectPool<Bullet> _pool;
+    private ObjectPool<Bullet>[] _pools;
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
+        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
 
-        _pool = new ObjectPool<Bullet>(
-            createFunc:      CreateBullet,
-            actionOnGet:     _ => { },
-            actionOnRelease: b => b.gameObject.SetActive(false),
-            actionOnDestroy: b => Destroy(b.gameObject),
-            collectionCheck: true,
-            defaultCapacity: defaultCapacity,
-            maxSize:         maxSize
-        );
+        _pools = new ObjectPool<Bullet>[entries.Length];
+        for (int i = 0; i < entries.Length; i++)
+        {
+            int             index = i;
+            BulletPoolEntry entry = entries[i];
+            _pools[i] = new ObjectPool<Bullet>(
+                createFunc:      () => CreateBullet(entry.prefab, index),
+                actionOnGet:     _ => { },
+                actionOnRelease: b => b.gameObject.SetActive(false),
+                actionOnDestroy: b => Destroy(b.gameObject),
+                collectionCheck: true,
+                defaultCapacity: entry.defaultCapacity,
+                maxSize:         entry.maxSize
+            );
+        }
     }
 
     private void OnDestroy()
@@ -36,9 +44,22 @@ public class BulletPool : MonoBehaviour, IProjectileLauncher
         if (Instance == this) Instance = null;
     }
 
-    public void Launch(Vector3 origin, Vector3 direction, string shooterName = "Unknown")
+    public int GetTypeIndex(Bullet prefab)
     {
-        Bullet bullet = _pool.Get();
+        if (prefab == null) return 0;
+        for (int i = 0; i < entries.Length; i++)
+            if (entries[i].prefab == prefab) return i;
+
+        Debug.LogWarning($"[BulletPool] Prefab '{prefab.name}' not found in entries. Using index 0.");
+        return 0;
+    }
+
+    public void Launch(Vector3 origin, Vector3 direction, string shooterName, Bullet prefab)
+        => Launch(origin, direction, shooterName, GetTypeIndex(prefab));
+
+    public void Launch(Vector3 origin, Vector3 direction, string shooterName = "Unknown", int typeIndex = 0)
+    {
+        Bullet bullet = _pools[typeIndex].Get();
         bullet.ShooterName = shooterName;
         bullet.transform.SetPositionAndRotation(origin, Quaternion.LookRotation(direction));
         bullet.OnSpawn();
@@ -47,11 +68,13 @@ public class BulletPool : MonoBehaviour, IProjectileLauncher
     public void ReturnBullet(Bullet bullet)
     {
         bullet.OnReturn();
-        _pool.Release(bullet);
+        _pools[bullet.TypeIndex].Release(bullet);
     }
 
-    private Bullet CreateBullet()
+    private Bullet CreateBullet(Bullet prefab, int typeIndex)
     {
-        return Instantiate(bulletPrefab, transform);
+        Bullet b = Instantiate(prefab, transform);
+        b.SetTypeIndex(typeIndex);
+        return b;
     }
 }
