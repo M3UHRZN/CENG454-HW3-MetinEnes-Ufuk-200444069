@@ -6382,9 +6382,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 844c6135939b8444e9b7be44b8005013, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BulletPool
-  bulletPrefab: {fileID: 1190413694070152143, guid: 251355e6f98d0d84db3304d3b71c840e, type: 3}
-  defaultCapacity: 20
-  maxSize: 50
+  entries:
+  - prefab: {fileID: 1190413694070152143, guid: 251355e6f98d0d84db3304d3b71c840e, type: 3}
+    defaultCapacity: 50
+    maxSize: 250
+  - prefab: {fileID: 1190413694070152143, guid: 3676d7b7a2400c84f9aedcda708e1983, type: 3}
+    defaultCapacity: 50
+    maxSize: 250
 --- !u!4 &1924513892
 Transform:
   m_ObjectHideFlags: 0
