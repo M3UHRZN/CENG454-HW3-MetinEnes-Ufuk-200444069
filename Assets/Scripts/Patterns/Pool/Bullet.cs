@@ -9,6 +9,8 @@ public class Bullet : MonoBehaviour, IPoolable
 
     private Rigidbody _rb;
     public string ShooterName { get; set; } = "Unknown";
+    public int    TypeIndex   { get; private set; }
+    public void   SetTypeIndex(int i) => TypeIndex = i;
     private float _timer;
     private bool _returned;
 
