@@ -10,18 +10,8 @@ public class BaseWeapon : MonoBehaviour, IWeapon
     public Bullet    BulletPrefab => bulletPrefab;
     public string    ShooterName  => "Player";
 
-    private float _cooldownTimer;
-
-    private void Update()
-    {
-        if (_cooldownTimer > 0f)
-            _cooldownTimer -= Time.deltaTime;
-    }
-
     public void Fire(Vector3 direction)
     {
-        if (_cooldownTimer > 0f) return;
-        _cooldownTimer = cooldown;
         BulletPool.Instance.Launch(transform.position, direction, ShooterName, bulletPrefab);
     }
 }
