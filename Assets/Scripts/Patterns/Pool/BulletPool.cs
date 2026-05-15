@@ -46,10 +46,11 @@ public class BulletPool : MonoBehaviour
 
     public int GetTypeIndex(Bullet prefab)
     {
+        if (prefab == null) return 0;
         for (int i = 0; i < entries.Length; i++)
             if (entries[i].prefab == prefab) return i;
 
-        Debug.LogWarning($"[BulletPool] Prefab '{prefab?.name}' not found in entries. Using index 0.");
+        Debug.LogWarning($"[BulletPool] Prefab '{prefab.name}' not found in entries. Using index 0.");
         return 0;
     }
 
