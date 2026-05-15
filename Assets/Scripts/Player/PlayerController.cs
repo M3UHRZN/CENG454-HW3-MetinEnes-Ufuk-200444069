@@ -16,6 +16,16 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private Rigidbody _rb;
     private IWeapon _weapon;
+    private float _nextFireAt;
+
+    public IWeapon Weapon => _weapon;
+
+    public void SetWeapon(IWeapon newWeapon)
+    {
+        if (newWeapon == null) return;
+        _weapon = newWeapon;
+    }
+
     private Camera _mainCamera;
     private PlayerAnimationController _animController;
 
@@ -121,6 +131,8 @@ public class PlayerController : MonoBehaviour, IDamageable
             Debug.LogWarning("[PlayerController] FireWeapon çağrıldı ama _weapon null!");
             return;
         }
+        if (Time.time < _nextFireAt) return;
+        _nextFireAt = Time.time + _weapon.Cooldown;
         _weapon.Fire(transform.forward);
     }
 }
