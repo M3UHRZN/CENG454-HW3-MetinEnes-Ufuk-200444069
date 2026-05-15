@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class BombStrategy : MonoBehaviour, IEnemyMovement
+public class BombAttackBehaviour : MonoBehaviour, IEnemyAttack
 {
     [SerializeField] private float detonationRange = 2.5f;
     [SerializeField] private float explosionRadius = 4f;
@@ -16,18 +16,14 @@ public class BombStrategy : MonoBehaviour, IEnemyMovement
     {
         if (agent == null || core == null || _exploded) return;
 
-        // Cache the core collider
         if (_coreCollider == null)
             _coreCollider = core.GetComponent<Collider>();
 
-        // Target the closest point on the core's surface, not its center.
-        Vector3 target = _coreCollider != null
+        Vector3 closest = _coreCollider != null
             ? _coreCollider.ClosestPoint(agent.transform.position)
             : core.position;
 
-        agent.SetDestination(target);
-
-        if (Vector3.Distance(agent.transform.position, target) <= detonationRange)
+        if (Vector3.Distance(agent.transform.position, closest) <= detonationRange)
             Explode(agent.transform.position);
     }
 
