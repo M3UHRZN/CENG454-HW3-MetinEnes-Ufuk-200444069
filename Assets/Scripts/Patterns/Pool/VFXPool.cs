@@ -64,7 +64,18 @@ public class VFXPool : MonoBehaviour
     public void Play(int typeIndex, Vector3 position, Quaternion rotation)
     {
         if (_pools == null || _pools.Length == 0) return;
+
         PooledVFX vfx = _pools[typeIndex].Get();
+
+        // Defensive: a pooled instance may have been destroyed externally
+        // (e.g. ParticleSystem.StopAction = Destroy on a prefab we didn't normalize).
+        // Unity's overloaded == returns true for fake-null destroyed objects.
+        if (vfx == null)
+        {
+            Debug.LogWarning($"[VFXPool] Pooled instance for type {typeIndex} was destroyed; recreating.");
+            vfx = CreateVFX(entries[typeIndex].prefab, typeIndex);
+        }
+
         vfx.transform.SetPositionAndRotation(position, rotation);
         vfx.OnSpawn();
     }

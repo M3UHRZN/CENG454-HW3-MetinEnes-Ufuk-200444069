@@ -111,7 +111,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4338934499403869665
 Transform:
   m_ObjectHideFlags: 0
@@ -162,7 +162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0dc5aeafebb967489fde034f9db2112, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  maxHealth: 100
+  maxHealth: 500
   contactDamage: 10
   movementStrategyBehaviour: {fileID: 6399558413124916584}
   attackBehaviourBehaviour: {fileID: 6133436408598444155}
@@ -202,7 +202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc890a07d5b5f6745b76c2f7ff85669f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RangedMovementStrategy
-  preferredRange: 8
+  preferredRange: 10
   retreatDistance: 8
 --- !u!114 &6133436408598444155
 MonoBehaviour:
@@ -216,7 +216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 075112cdb2d2d404397e4fa1db89f3ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RangedAttackBehaviour
-  firingRange: 9
+  firingRange: 22
   weapon: {fileID: 8430600313944645299}
 --- !u!114 &8430600313944645299
 MonoBehaviour:
@@ -232,4 +232,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyWeapon
   cooldown: 0.3
   fireHeight: 0
-  bulletPrefab: {fileID: 1190413694070152143, guid: 3676d7b7a2400c84f9aedcda708e1983, type: 3}
+  bulletPrefab: {fileID: -6495875730550442189, guid: 387d41d3b92a2664d897afde5b97173e, type: 3}

@@ -19,7 +19,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &9131839430761723071
 Transform:
   m_ObjectHideFlags: 0
@@ -70,7 +70,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0dc5aeafebb967489fde034f9db2112, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  maxHealth: 30
+  maxHealth: 20
   contactDamage: 10
   movementStrategyBehaviour: {fileID: 4095090261841648726}
   attackBehaviourBehaviour: {fileID: 0}
