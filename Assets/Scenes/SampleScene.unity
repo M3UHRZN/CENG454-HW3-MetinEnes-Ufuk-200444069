@@ -4736,6 +4736,40 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f432554f564e69242897607d34218939, type: 3}
+--- !u!1 &1638671619 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7771205594137586411, guid: d71d583132e46c940b95e653848adfd1, type: 3}
+  m_PrefabInstance: {fileID: 894088775668131513}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1638671625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1638671619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 075112cdb2d2d404397e4fa1db89f3ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RangedAttackBehaviour
+  firingRange: 9
+  attackCooldown: 0.2
+  fireHeight: 1
+--- !u!114 &1638671626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1638671619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc890a07d5b5f6745b76c2f7ff85669f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RangedMovementStrategy
+  preferredRange: 8
+  retreatDistance: 8
 --- !u!1 &1734126373
 GameObject:
   m_ObjectHideFlags: 0
@@ -6833,11 +6867,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2226598213540441664, guid: d1d7630b32a28fd429e4b141b4e88c23, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4095090261841648726, guid: d1d7630b32a28fd429e4b141b4e88c23, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5009175660499711655, guid: d1d7630b32a28fd429e4b141b4e88c23, type: 3}
+      propertyPath: m_Speed
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 9131839430761723071, guid: d1d7630b32a28fd429e4b141b4e88c23, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6934,7 +6972,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5544456918980302249, guid: d71d583132e46c940b95e653848adfd1, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5544456918980302249, guid: d71d583132e46c940b95e653848adfd1, type: 3}
       propertyPath: launcherBehaviour
@@ -6952,14 +6990,41 @@ PrefabInstance:
       propertyPath: coreTransform
       value: 
       objectReference: {fileID: 609737061}
+    - target: {fileID: 6486342559721682997, guid: d71d583132e46c940b95e653848adfd1, type: 3}
+      propertyPath: attackBehaviourBehaviour
+      value: 
+      objectReference: {fileID: 1638671625}
+    - target: {fileID: 6486342559721682997, guid: d71d583132e46c940b95e653848adfd1, type: 3}
+      propertyPath: movementStrategyBehaviour
+      value: 
+      objectReference: {fileID: 1638671626}
+    - target: {fileID: 7575284900821381254, guid: d71d583132e46c940b95e653848adfd1, type: 3}
+      propertyPath: m_AutoBraking
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7575284900821381254, guid: d71d583132e46c940b95e653848adfd1, type: 3}
+      propertyPath: m_AngularSpeed
+      value: 360
+      objectReference: {fileID: 0}
     - target: {fileID: 7771205594137586411, guid: d71d583132e46c940b95e653848adfd1, type: 3}
       propertyPath: m_Name
       value: Enemy-Guard
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 7771205594137586411, guid: d71d583132e46c940b95e653848adfd1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 5544456918980302249, guid: d71d583132e46c940b95e653848adfd1, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7771205594137586411, guid: d71d583132e46c940b95e653848adfd1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1638671626}
+    - targetCorrespondingSourceObject: {fileID: 7771205594137586411, guid: d71d583132e46c940b95e653848adfd1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1638671625}
   m_SourcePrefab: {fileID: 100100000, guid: d71d583132e46c940b95e653848adfd1, type: 3}
 --- !u!4 &1054829320425569945
 Transform:
@@ -7072,8 +7137,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0dc5aeafebb967489fde034f9db2112, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
-  maxHealth: 30
-  movementStrategyBehaviour: {fileID: 7998174679804945511}
+  maxHealth: 60
+  movementStrategyBehaviour: {fileID: 7998174679804945512}
+  attackBehaviourBehaviour: {fileID: 7998174679804945511}
   coreTransform: {fileID: 609737061}
 --- !u!1 &7998174679804945510
 GameObject:
@@ -7088,6 +7154,7 @@ GameObject:
   - component: {fileID: 7920098736686324740}
   - component: {fileID: 5246096378784863856}
   - component: {fileID: 1514339664365444606}
+  - component: {fileID: 7998174679804945512}
   - component: {fileID: 7998174679804945511}
   m_Layer: 8
   m_Name: Enemy-Bomb
@@ -7105,12 +7172,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 7998174679804945510}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ecf2e95fd20ca0c4da14836306b265e0, type: 3}
+  m_Script: {fileID: 11500000, guid: 3eec1db84c7b1224790615c45349dba2, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BombStrategy
+  m_EditorClassIdentifier: Assembly-CSharp::BombAttackBehaviour
   detonationRange: 2.5
   explosionRadius: 4
   explosionDamage: 50
+--- !u!114 &7998174679804945512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7998174679804945510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3deddde89b179846ae93d461eb1c8bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DirectMoveStrategy
 --- !u!23 &8240838036511433396
 MeshRenderer:
   m_ObjectHideFlags: 0
