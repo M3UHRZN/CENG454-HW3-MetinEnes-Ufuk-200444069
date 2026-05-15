@@ -16,7 +16,7 @@ public class EnergyCore : MonoBehaviour, IDamageable
         _isDead        = false;
     }
 
-    public void TakeDamage(float amount)
+    public void TakeDamage(float amount, string source = "Unknown")
     {
         if (_isDead) return;
 

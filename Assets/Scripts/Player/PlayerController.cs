@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         _inputActions = new InputSystem_Actions();
     }
 
-    public void TakeDamage(float amount)
+    public void TakeDamage(float amount, string source = "Unknown")
     {
         if (_isDead) return;
         _currentHealth = Mathf.Max(0f, _currentHealth - amount);
@@ -48,11 +48,20 @@ public class PlayerController : MonoBehaviour, IDamageable
     private void OnEnable()
     {
         _inputActions.Player.Enable();
+        GameEventBus.OnGameOver += HandleGameOver;
     }
 
     private void OnDisable()
     {
         _inputActions.Player.Disable();
+        GameEventBus.OnGameOver -= HandleGameOver;
+    }
+
+    private void HandleGameOver(bool playerWon)
+    {
+        enabled = false;
+        _rb.linearVelocity = Vector3.zero;
+        _animController?.SetShooting(false);
     }
 
     private void Update()
@@ -112,8 +121,6 @@ public class PlayerController : MonoBehaviour, IDamageable
             Debug.LogWarning("[PlayerController] FireWeapon çağrıldı ama _weapon null!");
             return;
         }
-
-        Debug.Log($"[PlayerController] Fire! Yön: {transform.forward}");
         _weapon.Fire(transform.forward);
     }
 }

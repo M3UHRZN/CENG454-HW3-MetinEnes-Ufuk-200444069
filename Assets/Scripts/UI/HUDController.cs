@@ -28,7 +28,7 @@ public class HUDController : MonoBehaviour
             coreHealthFill.fillAmount = current / max;
     }
 
-    private void HandleEnemyDied(int killCount)
+    private void HandleEnemyDied(int killCount, string killerName)
     {
         if (killText != null)
             killText.text = $"Kills: {killCount}";

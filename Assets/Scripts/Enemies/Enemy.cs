@@ -9,7 +9,8 @@ using UnityEngine.AI;
 public class Enemy : MonoBehaviour, IDamageable, IPoolable
 {
     // ── Health ────────────────────────────────────────────────────────────
-    [SerializeField] private float maxHealth = 30f;
+    [SerializeField] private float maxHealth     = 30f;
+    [SerializeField] private float contactDamage = 10f;
     private float _health;
 
     public float Health    => _health;
@@ -20,18 +21,31 @@ public class Enemy : MonoBehaviour, IDamageable, IPoolable
     [Tooltip("Assign a MonoBehaviour that implements IEnemyMovement.")]
     [SerializeField] private MonoBehaviour movementStrategyBehaviour;
     private IEnemyMovement _movementStrategy;
+
+    [Tooltip("Assign a MonoBehaviour that implements IEnemyAttack (optional).")]
+    [SerializeField] private MonoBehaviour attackBehaviourBehaviour;
+    private IEnemyAttack _attackBehaviour;
     [SerializeField] private Transform coreTransform;
     private Transform _playerTransform;
     private NavMeshAgent _agent;
 
     private void Awake()
     {
+        _health = maxHealth;
+
         _agent = GetComponent<NavMeshAgent>();
         if (movementStrategyBehaviour != null)
             _movementStrategy = movementStrategyBehaviour as IEnemyMovement;
 
         if (_movementStrategy == null)
             Debug.LogWarning($"[Enemy] {name}: movementStrategyBehaviour does not implement IEnemyMovement.");
+
+        if (attackBehaviourBehaviour != null)
+        {
+            _attackBehaviour = attackBehaviourBehaviour as IEnemyAttack;
+            if (_attackBehaviour == null)
+                Debug.LogWarning($"[Enemy] {name}: attackBehaviourBehaviour does not implement IEnemyAttack.");
+        }
 
         GameObject playerGO = GameObject.FindWithTag("Player");
         if (playerGO != null)
@@ -43,10 +57,11 @@ public class Enemy : MonoBehaviour, IDamageable, IPoolable
     private void Update()
     {
         _movementStrategy?.Execute(_agent, _playerTransform, coreTransform);
+        _attackBehaviour?.Execute(_agent, _playerTransform, coreTransform);
     }
 
 
-    public void TakeDamage(float amount)
+    public void TakeDamage(float amount, string source = "Unknown")
     {
         if (_health <= 0f) return; // already dead
 
@@ -55,13 +70,13 @@ public class Enemy : MonoBehaviour, IDamageable, IPoolable
         if (_health <= 0f)
         {
             _health = 0f;
-            OnDeath();
+            OnDeath(source);
         }
     }
 
-    private void OnDeath()
+    private void OnDeath(string killerName)
     {
-        GameEventBus.RaiseEnemyDied(++killCount);
+        GameEventBus.RaiseEnemyDied(++killCount, killerName);
         OnReturn();
     }
 
@@ -107,10 +122,9 @@ public class Enemy : MonoBehaviour, IDamageable, IPoolable
 
     private void TryDealContactDamage(GameObject target)
     {
-        IDamageable damageable = target.GetComponent<IDamageable>();
+        if (!target.CompareTag("Core")) return;
+        IDamageable damageable = target.GetComponentInParent<IDamageable>();
         if (damageable != null)
-        {
-            damageable.TakeDamage(maxHealth); // ram deals full health as damage
-        }
+            damageable.TakeDamage(contactDamage, gameObject.name);
     }
 }

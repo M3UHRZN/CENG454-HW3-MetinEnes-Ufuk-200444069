@@ -37,7 +37,7 @@ public class AudioManager : MonoBehaviour
         GameEventBus.OnCoreDamaged -= HandleCoreDamaged;
     }
 
-    private void HandleEnemyDied(int killCount)
+    private void HandleEnemyDied(int killCount, string killerName)
     {
         if (enemyDeathClip != null)
             audioSource.PlayOneShot(enemyDeathClip);

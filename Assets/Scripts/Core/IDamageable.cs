@@ -2,5 +2,5 @@ public interface IDamageable
 {
     float Health { get; }
     float MaxHealth { get; }
-    void TakeDamage(float amount);
+    void TakeDamage(float amount, string source = "Unknown");
 }

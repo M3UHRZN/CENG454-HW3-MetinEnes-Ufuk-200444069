@@ -24,6 +24,13 @@ public class GameStateManager : MonoBehaviour
 
     private void HandleGameOver(bool playerWon)
     {
+        StartCoroutine(GameOverRoutine(playerWon));
+    }
+
+    private System.Collections.IEnumerator GameOverRoutine(bool playerWon)
+    {
+        yield return new WaitForSeconds(4f);
+
         Time.timeScale = 0f;
 
         if (playerWon)
