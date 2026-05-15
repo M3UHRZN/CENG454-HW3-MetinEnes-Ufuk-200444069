@@ -1,50 +1,70 @@
 using UnityEngine;
 using UnityEngine.Pool;
 
+[System.Serializable]
+public struct EnemyPoolEntry
+{
+    public Enemy prefab;
+    public int   defaultCapacity;
+    public int   maxSize;
+}
+
 public class EnemyPool : MonoBehaviour
 {
-    [SerializeField] private Enemy enemyPrefab;
-    [SerializeField] private int defaultCapacity = 10;
-    [SerializeField] private int maxSize = 30;
+    public static EnemyPool Instance { get; private set; }
 
-    private ObjectPool<Enemy> _pool;
+    [SerializeField] private EnemyPoolEntry[] entries;
+
+    private ObjectPool<Enemy>[] _pools;
 
     private void Awake()
     {
-        _pool = new ObjectPool<Enemy>(
-            createFunc:      CreateEnemy,
-            actionOnGet:     OnGetEnemy,
-            actionOnRelease: OnReleaseEnemy,
-            actionOnDestroy: OnDestroyEnemy,
-            collectionCheck: true,
-            defaultCapacity: defaultCapacity,
-            maxSize: maxSize
-        );
+        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
+        Instance = this;
+
+        _pools = new ObjectPool<Enemy>[entries.Length];
+        for (int i = 0; i < entries.Length; i++)
+        {
+            int            index = i;
+            EnemyPoolEntry entry = entries[i];
+            _pools[i] = new ObjectPool<Enemy>(
+                createFunc:      () => CreateEnemy(entry.prefab, index),
+                actionOnGet:     e  => OnGetEnemy(e, index),
+                actionOnRelease: e  => e.gameObject.SetActive(false),
+                actionOnDestroy: e  => Destroy(e.gameObject),
+                collectionCheck: true,
+                defaultCapacity: entry.defaultCapacity,
+                maxSize:         entry.maxSize
+            );
+        }
     }
 
-    public Enemy Get()
+    private void OnDestroy()
     {
-        return _pool.Get();
+        if (Instance == this) Instance = null;
+    }
+
+    public Enemy Get(int typeIndex)
+    {
+        return _pools[typeIndex].Get();
     }
 
     public void Return(Enemy enemy)
     {
         enemy.OnReturn();
-        _pool.Release(enemy);
+        _pools[enemy.TypeIndex].Release(enemy);
     }
 
-    private Enemy CreateEnemy()
+    private Enemy CreateEnemy(Enemy prefab, int typeIndex)
     {
-        Enemy e = Instantiate(enemyPrefab, transform);
+        Enemy e = Instantiate(prefab, transform);
+        e.SetTypeIndex(typeIndex);
         return e;
     }
 
-    private void OnGetEnemy(Enemy e)
+    private void OnGetEnemy(Enemy e, int typeIndex)
     {
-        e.gameObject.SetActive(true);
+        e.SetTypeIndex(typeIndex);
         e.OnSpawn();
     }
-
-    private void OnReleaseEnemy(Enemy e) => e.gameObject.SetActive(false);
-    private void OnDestroyEnemy(Enemy e) => Destroy(e.gameObject);
 }
