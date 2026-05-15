@@ -20,6 +20,10 @@ public class Enemy : MonoBehaviour, IDamageable, IPoolable
     [Tooltip("Assign a MonoBehaviour that implements IEnemyMovement.")]
     [SerializeField] private MonoBehaviour movementStrategyBehaviour;
     private IEnemyMovement _movementStrategy;
+
+    [Tooltip("Assign a MonoBehaviour that implements IEnemyAttack (optional).")]
+    [SerializeField] private MonoBehaviour attackBehaviourBehaviour;
+    private IEnemyAttack _attackBehaviour;
     [SerializeField] private Transform coreTransform;
     private Transform _playerTransform;
     private NavMeshAgent _agent;
@@ -35,6 +39,13 @@ public class Enemy : MonoBehaviour, IDamageable, IPoolable
         if (_movementStrategy == null)
             Debug.LogWarning($"[Enemy] {name}: movementStrategyBehaviour does not implement IEnemyMovement.");
 
+        if (attackBehaviourBehaviour != null)
+        {
+            _attackBehaviour = attackBehaviourBehaviour as IEnemyAttack;
+            if (_attackBehaviour == null)
+                Debug.LogWarning($"[Enemy] {name}: attackBehaviourBehaviour does not implement IEnemyAttack.");
+        }
+
         GameObject playerGO = GameObject.FindWithTag("Player");
         if (playerGO != null)
             _playerTransform = playerGO.transform;
@@ -45,6 +56,7 @@ public class Enemy : MonoBehaviour, IDamageable, IPoolable
     private void Update()
     {
         _movementStrategy?.Execute(_agent, _playerTransform, coreTransform);
+        _attackBehaviour?.Execute(_agent, _playerTransform, coreTransform);
     }
 
 
