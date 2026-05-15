@@ -19,6 +19,15 @@ public class PooledVFX : MonoBehaviour, IPoolable
         _ps = GetComponent<ParticleSystem>();
         if (_ps == null)
             _ps = GetComponentInChildren<ParticleSystem>();
+
+        // Force StopAction = None on every ParticleSystem in this hierarchy.
+        // Otherwise a particle with StopAction = Destroy would kill this GameObject
+        // when it finishes, leaving a dangling reference inside the pool stack.
+        foreach (ParticleSystem ps in GetComponentsInChildren<ParticleSystem>(true))
+        {
+            ParticleSystem.MainModule main = ps.main;
+            main.stopAction = ParticleSystemStopAction.None;
+        }
     }
 
     public void OnSpawn()
