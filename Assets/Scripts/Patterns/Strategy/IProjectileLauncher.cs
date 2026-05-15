@@ -2,5 +2,5 @@ using UnityEngine;
 
 public interface IProjectileLauncher
 {
-    void Launch(Vector3 origin, Vector3 direction);
+    void Launch(Vector3 origin, Vector3 direction, string shooterName = "Unknown");
 }

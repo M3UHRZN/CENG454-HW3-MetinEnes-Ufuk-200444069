@@ -36,9 +36,10 @@ public class BulletPool : MonoBehaviour, IProjectileLauncher
         if (Instance == this) Instance = null;
     }
 
-    public void Launch(Vector3 origin, Vector3 direction)
+    public void Launch(Vector3 origin, Vector3 direction, string shooterName = "Unknown")
     {
         Bullet bullet = _pool.Get();
+        bullet.ShooterName = shooterName;
         bullet.transform.SetPositionAndRotation(origin, Quaternion.LookRotation(direction));
         bullet.OnSpawn();
     }

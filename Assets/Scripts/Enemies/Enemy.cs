@@ -48,7 +48,7 @@ public class Enemy : MonoBehaviour, IDamageable, IPoolable
     }
 
 
-    public void TakeDamage(float amount)
+    public void TakeDamage(float amount, string source = "Unknown")
     {
         if (_health <= 0f) return; // already dead
 
@@ -57,13 +57,13 @@ public class Enemy : MonoBehaviour, IDamageable, IPoolable
         if (_health <= 0f)
         {
             _health = 0f;
-            OnDeath();
+            OnDeath(source);
         }
     }
 
-    private void OnDeath()
+    private void OnDeath(string killerName)
     {
-        GameEventBus.RaiseEnemyDied(++killCount);
+        GameEventBus.RaiseEnemyDied(++killCount, killerName);
         OnReturn();
     }
 
@@ -112,7 +112,7 @@ public class Enemy : MonoBehaviour, IDamageable, IPoolable
         IDamageable damageable = target.GetComponent<IDamageable>();
         if (damageable != null)
         {
-            damageable.TakeDamage(maxHealth); // ram deals full health as damage
+            damageable.TakeDamage(maxHealth, gameObject.name); // ram deals full health as damage
         }
     }
 }

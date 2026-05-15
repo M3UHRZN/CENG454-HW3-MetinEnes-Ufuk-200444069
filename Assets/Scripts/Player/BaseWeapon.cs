@@ -18,6 +18,6 @@ public class BaseWeapon : MonoBehaviour, IWeapon
     {
         if (_cooldownTimer > 0f) return;
         _cooldownTimer = cooldown;
-        BulletPool.Instance.Launch(transform.position, direction);
+        BulletPool.Instance.Launch(transform.position, direction, "Player");
     }
 }

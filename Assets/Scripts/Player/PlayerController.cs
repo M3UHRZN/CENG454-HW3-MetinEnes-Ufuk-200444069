@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         _inputActions = new InputSystem_Actions();
     }
 
-    public void TakeDamage(float amount)
+    public void TakeDamage(float amount, string source = "Unknown")
     {
         if (_isDead) return;
         _currentHealth = Mathf.Max(0f, _currentHealth - amount);

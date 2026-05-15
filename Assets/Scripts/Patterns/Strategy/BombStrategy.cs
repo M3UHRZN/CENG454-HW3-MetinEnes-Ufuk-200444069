@@ -42,9 +42,9 @@ public class BombStrategy : MonoBehaviour, IEnemyMovement
         {
             IDamageable target = hit.GetComponentInParent<IDamageable>();
             if (target != null && !ReferenceEquals(target, self))
-                target.TakeDamage(explosionDamage);
+                target.TakeDamage(explosionDamage, gameObject.name);
         }
 
-        self?.TakeDamage(float.MaxValue);
+        self?.TakeDamage(float.MaxValue, gameObject.name);
     }
 }

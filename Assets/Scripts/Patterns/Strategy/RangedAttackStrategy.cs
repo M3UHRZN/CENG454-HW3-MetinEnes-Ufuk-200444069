@@ -48,6 +48,6 @@ public class RangedAttackStrategy : MonoBehaviour, IEnemyMovement
     private void FireAt(Vector3 origin, Vector3 targetPos)
     {
         Vector3 direction = (targetPos - origin).normalized;
-        BulletPool.Instance.Launch(origin, direction);
+        BulletPool.Instance.Launch(origin, direction, gameObject.name);
     }
 }

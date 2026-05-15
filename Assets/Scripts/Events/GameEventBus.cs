@@ -4,7 +4,7 @@ using UnityEngine;
 public static class GameEventBus
 {
     public static event Action<float, float> OnCoreDamaged;
-    public static event Action<int> OnEnemyDied;
+    public static event Action<int, string> OnEnemyDied;
     public static event Action<int> OnWaveCompleted;
     public static event Action<bool> OnGameOver;
 
@@ -14,10 +14,10 @@ public static class GameEventBus
         OnCoreDamaged?.Invoke(currentHP, maxHP);
     }
 
-    public static void RaiseEnemyDied(int killCount)
+    public static void RaiseEnemyDied(int killCount, string killerName)
     {
-        Debug.Log($"[GameEventBus] EnemyDied → Kill Count: {killCount}");
-        OnEnemyDied?.Invoke(killCount);
+        Debug.Log($"[GameEventBus] EnemyDied → Kill Count: {killCount}, Killer: {killerName}");
+        OnEnemyDied?.Invoke(killCount, killerName);
     }
 
     public static void RaiseWaveCompleted(int waveIndex)

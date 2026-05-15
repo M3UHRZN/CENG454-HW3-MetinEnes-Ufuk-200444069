@@ -30,7 +30,7 @@ public class DebugDamager : MonoBehaviour
             return;
         }
 
-        damageable.TakeDamage(damageAmount);
+        damageable.TakeDamage(damageAmount, "DebugDamager");
         Debug.Log($"[DebugDamager] {target.name} hedefine {damageAmount} hasar verildi. Kalan HP: {damageable.Health}/{damageable.MaxHealth}");
     }
 }
