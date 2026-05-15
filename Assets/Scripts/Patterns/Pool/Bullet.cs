@@ -3,9 +3,10 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Bullet : MonoBehaviour, IPoolable
 {
-    [SerializeField] private float speed    = 15f;
-    [SerializeField] private float lifetime = 3f;
-    [SerializeField] private float damage   = 10f;
+    [SerializeField] private float     speed    = 15f;
+    [SerializeField] private float     lifetime = 3f;
+    [SerializeField] private float     damage   = 10f;
+    [SerializeField] private PooledVFX hitVFX;
 
     private Rigidbody _rb;
     public string ShooterName { get; set; } = "Unknown";
@@ -45,13 +46,30 @@ public class Bullet : MonoBehaviour, IPoolable
     private void OnTriggerEnter(Collider other)
     {
         IDamageable target = other.GetComponentInParent<IDamageable>();
-        if (target != null) { target.TakeDamage(damage, ShooterName); Return(); }
+        if (target != null)
+        {
+            target.TakeDamage(damage, ShooterName);
+            PlayHitVFX();
+            Return();
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         IDamageable target = collision.gameObject.GetComponentInParent<IDamageable>();
-        if (target != null) { target.TakeDamage(damage, ShooterName); Return(); }
+        if (target != null)
+        {
+            target.TakeDamage(damage, ShooterName);
+            PlayHitVFX();
+            Return();
+        }
+    }
+
+    private void PlayHitVFX()
+    {
+        if (hitVFX == null || VFXPool.Instance == null) return;
+        Quaternion rot = Quaternion.LookRotation(-transform.forward);
+        VFXPool.Instance.Play(transform.position, rot, hitVFX);
     }
 
     private void Return()
