@@ -3,13 +3,13 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Bullet : MonoBehaviour, IPoolable
 {
-    [SerializeField] private float speed = 15f;
+    [SerializeField] private float speed    = 15f;
     [SerializeField] private float lifetime = 3f;
-    [SerializeField] private float damage = 10f;
+    [SerializeField] private float damage   = 10f;
 
     private Rigidbody _rb;
     private float _timer;
-    private BulletPool _pool;
+    private bool _returned;
 
     private void Awake()
     {
@@ -19,17 +19,12 @@ public class Bullet : MonoBehaviour, IPoolable
                           RigidbodyConstraints.FreezePositionY;
     }
 
-    public void Init(BulletPool pool)
-    {
-        _pool = pool;
-    }
-
     public void OnSpawn()
     {
         _returned = false;
-        _timer = lifetime;
-        _rb.linearVelocity = transform.forward * speed;
+        _timer    = lifetime;
         gameObject.SetActive(true);
+        _rb.linearVelocity = transform.forward * speed;
     }
 
     public void OnReturn()
@@ -38,29 +33,28 @@ public class Bullet : MonoBehaviour, IPoolable
         gameObject.SetActive(false);
     }
 
-    private bool _returned;
-
     private void Update()
     {
         _timer -= Time.deltaTime;
-        if (_timer <= 0f)
-            Return();
+        if (_timer <= 0f) Return();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        IDamageable target = other.GetComponent<IDamageable>();
-        if (target != null)
-        {
-            target.TakeDamage(damage);
-            Return();
-        }
+        IDamageable target = other.GetComponentInParent<IDamageable>();
+        if (target != null) { target.TakeDamage(damage); Return(); }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        IDamageable target = collision.gameObject.GetComponentInParent<IDamageable>();
+        if (target != null) { target.TakeDamage(damage); Return(); }
     }
 
     private void Return()
     {
         if (_returned) return;
         _returned = true;
-        _pool?.ReturnBullet(this);
+        BulletPool.Instance?.ReturnBullet(this);
     }
 }
