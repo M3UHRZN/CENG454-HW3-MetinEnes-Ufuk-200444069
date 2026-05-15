@@ -9,7 +9,8 @@ using UnityEngine.AI;
 public class Enemy : MonoBehaviour, IDamageable, IPoolable
 {
     // ── Health ────────────────────────────────────────────────────────────
-    [SerializeField] private float maxHealth = 30f;
+    [SerializeField] private float maxHealth     = 30f;
+    [SerializeField] private float contactDamage = 10f;
     private float _health;
 
     public float Health    => _health;
@@ -121,10 +122,9 @@ public class Enemy : MonoBehaviour, IDamageable, IPoolable
 
     private void TryDealContactDamage(GameObject target)
     {
-        IDamageable damageable = target.GetComponent<IDamageable>();
+        if (!target.CompareTag("Core")) return;
+        IDamageable damageable = target.GetComponentInParent<IDamageable>();
         if (damageable != null)
-        {
-            damageable.TakeDamage(maxHealth, gameObject.name); // ram deals full health as damage
-        }
+            damageable.TakeDamage(contactDamage, gameObject.name);
     }
 }
