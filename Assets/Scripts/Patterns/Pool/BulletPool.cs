@@ -44,6 +44,18 @@ public class BulletPool : MonoBehaviour
         if (Instance == this) Instance = null;
     }
 
+    public int GetTypeIndex(Bullet prefab)
+    {
+        for (int i = 0; i < entries.Length; i++)
+            if (entries[i].prefab == prefab) return i;
+
+        Debug.LogWarning($"[BulletPool] Prefab '{prefab?.name}' not found in entries. Using index 0.");
+        return 0;
+    }
+
+    public void Launch(Vector3 origin, Vector3 direction, string shooterName, Bullet prefab)
+        => Launch(origin, direction, shooterName, GetTypeIndex(prefab));
+
     public void Launch(Vector3 origin, Vector3 direction, string shooterName = "Unknown", int typeIndex = 0)
     {
         Bullet bullet = _pools[typeIndex].Get();
