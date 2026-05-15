@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 
 [System.Serializable]
 public class EnemySpawnEntry
@@ -76,7 +77,14 @@ public class WaveSpawner : MonoBehaviour
     {
         Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
         Enemy enemy = EnemyPool.Instance.Get(prefab);
-        enemy.transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
+
+        NavMeshAgent agent = enemy.GetComponent<NavMeshAgent>();
+        if (agent != null && NavMesh.SamplePosition(spawnPoint.position, out NavMeshHit hit, 3f, NavMesh.AllAreas))
+            agent.Warp(hit.position);
+        else
+            enemy.transform.position = spawnPoint.position;
+
+        enemy.transform.rotation = spawnPoint.rotation;
         _aliveCount++;
     }
 
