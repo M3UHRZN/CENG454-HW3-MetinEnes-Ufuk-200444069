@@ -44,10 +44,23 @@ public class EnemyPool : MonoBehaviour
         if (Instance == this) Instance = null;
     }
 
+    public int GetTypeIndex(Enemy prefab)
+    {
+        if (prefab == null) return 0;
+        for (int i = 0; i < entries.Length; i++)
+            if (entries[i].prefab == prefab) return i;
+
+        Debug.LogWarning($"[EnemyPool] Prefab '{prefab.name}' not found in entries. Using index 0.");
+        return 0;
+    }
+
     public Enemy Get(int typeIndex)
     {
         return _pools[typeIndex].Get();
     }
+
+    public Enemy Get(Enemy prefab)
+        => Get(GetTypeIndex(prefab));
 
     public void Return(Enemy enemy)
     {

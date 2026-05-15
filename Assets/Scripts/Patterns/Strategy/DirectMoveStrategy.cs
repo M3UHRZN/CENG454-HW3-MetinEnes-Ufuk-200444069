@@ -23,6 +23,9 @@ public class DirectMoveStrategy : MonoBehaviour, IEnemyMovement
             ? _coreCollider.ClosestPoint(agent.transform.position)
             : core.position;
 
+        if (NavMesh.SamplePosition(target, out NavMeshHit hit, 3f, NavMesh.AllAreas))
+            target = hit.position;
+
         agent.SetDestination(target);
     }
 

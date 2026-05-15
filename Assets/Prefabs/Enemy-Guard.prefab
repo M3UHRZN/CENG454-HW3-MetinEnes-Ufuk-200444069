@@ -111,7 +111,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4338934499403869665
 Transform:
   m_ObjectHideFlags: 0
@@ -163,6 +163,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   maxHealth: 100
+  contactDamage: 10
   movementStrategyBehaviour: {fileID: 6399558413124916584}
   attackBehaviourBehaviour: {fileID: 6133436408598444155}
   coreTransform: {fileID: 0}
@@ -179,7 +180,7 @@ CapsuleCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
@@ -230,4 +231,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyWeapon
   cooldown: 0.3
-  fireHeight: 1
+  fireHeight: 0
+  bulletPrefab: {fileID: 1190413694070152143, guid: 3676d7b7a2400c84f9aedcda708e1983, type: 3}
