@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class EnemyWeapon : MonoBehaviour, IWeapon
 {
-    [SerializeField] private float cooldown   = 2f;
-    [SerializeField] private float fireHeight = 1f;
+    [SerializeField] private float  cooldown     = 2f;
+    [SerializeField] private float  fireHeight   = 1f;
+    [SerializeField] private Bullet bulletPrefab;
 
     public float Cooldown => cooldown;
 
@@ -21,6 +22,6 @@ public class EnemyWeapon : MonoBehaviour, IWeapon
         _timer = cooldown;
 
         Vector3 origin = transform.position + Vector3.up * fireHeight;
-        BulletPool.Instance.Launch(origin, direction, gameObject.name);
+        BulletPool.Instance.Launch(origin, direction, gameObject.name, bulletPrefab);
     }
 }

@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class BaseWeapon : MonoBehaviour, IWeapon
 {
-    [SerializeField] private float cooldown = 0.5f;
+    [SerializeField] private float  cooldown     = 0.5f;
+    [SerializeField] private Bullet bulletPrefab;
 
     public float Cooldown => cooldown;
 
@@ -18,6 +19,6 @@ public class BaseWeapon : MonoBehaviour, IWeapon
     {
         if (_cooldownTimer > 0f) return;
         _cooldownTimer = cooldown;
-        BulletPool.Instance.Launch(transform.position, direction, "Player");
+        BulletPool.Instance.Launch(transform.position, direction, "Player", bulletPrefab);
     }
 }
