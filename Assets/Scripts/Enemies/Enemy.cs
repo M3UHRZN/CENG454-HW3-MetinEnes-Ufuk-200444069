@@ -18,6 +18,9 @@ public class Enemy : MonoBehaviour, IDamageable, IPoolable
 
     private static int killCount = 0;
 
+    public int TypeIndex { get; private set; }
+    public void SetTypeIndex(int i) => TypeIndex = i;
+
     [Tooltip("Assign a MonoBehaviour that implements IEnemyMovement.")]
     [SerializeField] private MonoBehaviour movementStrategyBehaviour;
     private IEnemyMovement _movementStrategy;
@@ -60,10 +63,9 @@ public class Enemy : MonoBehaviour, IDamageable, IPoolable
         _attackBehaviour?.Execute(_agent, _playerTransform, coreTransform);
     }
 
-
     public void TakeDamage(float amount, string source = "Unknown")
     {
-        if (_health <= 0f) return; // already dead
+        if (_health <= 0f) return;
 
         _health -= amount;
 
@@ -77,7 +79,7 @@ public class Enemy : MonoBehaviour, IDamageable, IPoolable
     private void OnDeath(string killerName)
     {
         GameEventBus.RaiseEnemyDied(++killCount, killerName);
-        OnReturn();
+        EnemyPool.Instance?.Return(this);
     }
 
     public void OnSpawn()
@@ -103,18 +105,11 @@ public class Enemy : MonoBehaviour, IDamageable, IPoolable
 
     // ── Collision / Trigger ───────────────────────────────────────────────
 
-    /// <summary>
-    /// Physical collision: if the collided object is IDamageable,
-    /// deal damage — represents the enemy ramming the core.
-    /// </summary>
     private void OnCollisionEnter(Collision collision)
     {
         TryDealContactDamage(collision.gameObject);
     }
 
-    /// <summary>
-    /// Trigger-based contact (use if the enemy collider is set to Is Trigger).
-    /// </summary>
     private void OnTriggerEnter(Collider other)
     {
         TryDealContactDamage(other.gameObject);
