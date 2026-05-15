@@ -25,4 +25,18 @@ public class DirectMoveStrategy : MonoBehaviour, IEnemyMovement
 
         agent.SetDestination(target);
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player")) return;
+        if (collision.gameObject.GetComponentInParent<IDamageable>() != null)
+            GetComponent<Enemy>()?.TakeDamage(float.MaxValue, "Contact");
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player")) return;
+        if (other.GetComponentInParent<IDamageable>() != null)
+            GetComponent<Enemy>()?.TakeDamage(float.MaxValue, "Contact");
+    }
 }
