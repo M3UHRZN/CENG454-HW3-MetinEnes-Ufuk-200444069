@@ -17,6 +17,7 @@ public class Enemy : MonoBehaviour, IDamageable, IPoolable
     public float MaxHealth => maxHealth;
 
     private static int killCount = 0;
+    private float _baseSpeed;
 
     public int TypeIndex { get; private set; }
     public void SetTypeIndex(int i) => TypeIndex = i;
@@ -64,6 +65,25 @@ public class Enemy : MonoBehaviour, IDamageable, IPoolable
             else
                 Debug.LogWarning("[Enemy] No GameObject with tag 'Core' found in scene.");
         }
+
+        _baseSpeed = _agent != null ? _agent.speed : 3.5f;
+    }
+
+    private void OnEnable()
+    {
+        GameEventBus.OnWaveCompleted += HandleWaveCompleted;
+    }
+
+    private void OnDisable()
+    {
+        GameEventBus.OnWaveCompleted -= HandleWaveCompleted;
+    }
+
+    private void HandleWaveCompleted(int waveIndex)
+    {
+        if (_agent == null) return;
+        // Her wave sonrası %15 hız artışı — pool'dan çıkarken base speed'e reset edilir
+        _agent.speed = Mathf.Min(_agent.speed * 1.15f, _baseSpeed * 2f);
     }
 
     private void Update()
@@ -94,22 +114,20 @@ public class Enemy : MonoBehaviour, IDamageable, IPoolable
     public void OnSpawn()
     {
         _health = maxHealth;
-
-        if (_agent != null) _agent.enabled = true;
+        if (_agent != null)
+        {
+            _agent.speed   = _baseSpeed;
+            _agent.enabled = true;
+        }
         gameObject.SetActive(true);
-
-        // NOTE: If this Enemy were subscribed to any GameEventBus events,
-        // re-subscribe here to avoid ghost subscriber issues after pool reuse.
+        GameEventBus.OnWaveCompleted += HandleWaveCompleted; // ghost bug fix: re-subscribe
     }
 
     public void OnReturn()
     {
+        GameEventBus.OnWaveCompleted -= HandleWaveCompleted; // ghost bug fix: unsubscribe
         if (_agent != null) _agent.enabled = false;
         gameObject.SetActive(false);
-
-        // NOTE: Unsubscribe from any GameEventBus events here to prevent
-        // ghost subscribers firing on a pooled (inactive) Enemy instance.
-        // e.g.: GameEventBus.OnSomeEvent -= HandleSomeEvent;
     }
 
     // ── Collision / Trigger ───────────────────────────────────────────────
