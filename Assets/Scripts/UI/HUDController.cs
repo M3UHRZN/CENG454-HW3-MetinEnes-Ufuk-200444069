@@ -31,12 +31,13 @@ public class HUDController : MonoBehaviour
     private void HandleEnemyDied(int killCount, string killerName)
     {
         if (killText != null)
-            killText.text = $"Kills: {killCount}";
+            if (killerName == "Player")
+                killText.text = $"Kills: {killCount}";
     }
 
     private void HandleWaveCompleted(int waveIndex)
     {
         if (waveText != null)
-            waveText.text = $"Wave: {waveIndex}";
+            waveText.text = $"Wave: {waveIndex + 1}";
     }
 }

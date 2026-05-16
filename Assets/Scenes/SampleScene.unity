@@ -14248,10 +14248,10 @@ MonoBehaviour:
     delayAfterWave: 3
   - enemies:
     - prefab: {fileID: 2157393474844988962, guid: d1d7630b32a28fd429e4b141b4e88c23, type: 3}
-      count: 5
+      count: 10
       spawnInterval: 1
     - prefab: {fileID: 867445683056812479, guid: 878742add4aecec46bcb092e5ff836be, type: 3}
-      count: 5
+      count: 10
       spawnInterval: 1
     - prefab: {fileID: 6486342559721682997, guid: d71d583132e46c940b95e653848adfd1, type: 3}
       count: 3
@@ -14262,7 +14262,7 @@ MonoBehaviour:
       count: 0
       spawnInterval: 0
     - prefab: {fileID: 867445683056812479, guid: 878742add4aecec46bcb092e5ff836be, type: 3}
-      count: 10
+      count: 20
       spawnInterval: 0
     - prefab: {fileID: 6486342559721682997, guid: d71d583132e46c940b95e653848adfd1, type: 3}
       count: 5
