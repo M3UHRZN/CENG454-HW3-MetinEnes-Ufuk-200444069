@@ -40,6 +40,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         _rb.constraints = RigidbodyConstraints.FreezeRotation;
         _currentHealth = maxHealth;
         _inputActions = new InputSystem_Actions();
+        GameEventBus.RaisePlayerDamaged(_currentHealth, maxHealth);
     }
 
     public void TakeDamage(float amount, string source = "Unknown")
@@ -47,6 +48,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         if (_isDead) return;
         _currentHealth = Mathf.Max(0f, _currentHealth - amount);
         Debug.Log($"[Player] TakeDamage {amount} → HP: {_currentHealth}/{maxHealth}");
+        GameEventBus.RaisePlayerDamaged(_currentHealth, maxHealth);
         if (_currentHealth <= 0f)
         {
             _isDead = true;

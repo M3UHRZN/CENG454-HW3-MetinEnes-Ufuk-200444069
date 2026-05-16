@@ -5,12 +5,14 @@ using UnityEngine.UI;
 public class HUDController : MonoBehaviour
 {
     [SerializeField] private Image coreHealthFill;
+    [SerializeField] private Image playerHealthFill;
     [SerializeField] private TextMeshProUGUI waveText;
     [SerializeField] private TextMeshProUGUI killText;
 
     private void OnEnable()
     {
         GameEventBus.OnCoreDamaged   += HandleCoreDamaged;
+        GameEventBus.OnPlayerDamaged += HandlePlayerDamaged;
         GameEventBus.OnEnemyDied     += HandleEnemyDied;
         GameEventBus.OnWaveCompleted += HandleWaveCompleted;
     }
@@ -18,6 +20,7 @@ public class HUDController : MonoBehaviour
     private void OnDisable()
     {
         GameEventBus.OnCoreDamaged   -= HandleCoreDamaged;
+        GameEventBus.OnPlayerDamaged -= HandlePlayerDamaged;
         GameEventBus.OnEnemyDied     -= HandleEnemyDied;
         GameEventBus.OnWaveCompleted -= HandleWaveCompleted;
     }
@@ -26,6 +29,12 @@ public class HUDController : MonoBehaviour
     {
         if (coreHealthFill != null)
             coreHealthFill.fillAmount = current / max;
+    }
+
+    private void HandlePlayerDamaged(float current, float max)
+    {
+        if (playerHealthFill != null)
+            playerHealthFill.fillAmount = current / max;
     }
 
     private void HandleEnemyDied(int killCount, string killerName)

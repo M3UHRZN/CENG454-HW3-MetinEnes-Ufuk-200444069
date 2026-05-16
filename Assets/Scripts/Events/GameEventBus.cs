@@ -4,6 +4,7 @@ using UnityEngine;
 public static class GameEventBus
 {
     public static event Action<float, float> OnCoreDamaged;
+    public static event Action<float, float> OnPlayerDamaged;
     public static event Action<int, string> OnEnemyDied;
     public static event Action<int> OnWaveCompleted;
     public static event Action<bool> OnGameOver;
@@ -12,6 +13,12 @@ public static class GameEventBus
     {
         Debug.Log($"[GameEventBus] CoreDamaged → HP: {currentHP}/{maxHP}");
         OnCoreDamaged?.Invoke(currentHP, maxHP);
+    }
+
+    public static void RaisePlayerDamaged(float currentHP, float maxHP)
+    {
+        Debug.Log($"[GameEventBus] PlayerDamaged → HP: {currentHP}/{maxHP}");
+        OnPlayerDamaged?.Invoke(currentHP, maxHP);
     }
 
     public static void RaiseEnemyDied(int killCount, string killerName)
