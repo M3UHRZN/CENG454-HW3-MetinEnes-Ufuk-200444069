@@ -156,3 +156,4 @@ MonoBehaviour:
   speed: 15
   lifetime: 3
   damage: 15
+  hitVFX: {fileID: 970695113627179531, guid: 28848f5e802bcd1469be351523191a01, type: 3}

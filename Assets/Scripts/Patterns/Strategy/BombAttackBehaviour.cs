@@ -3,9 +3,10 @@ using UnityEngine.AI;
 
 public class BombAttackBehaviour : MonoBehaviour, IEnemyAttack
 {
-    [SerializeField] private float detonationRange = 2.5f;
-    [SerializeField] private float explosionRadius = 4f;
-    [SerializeField] private float explosionDamage = 50f;
+    [SerializeField] private float     detonationRange = 2.5f;
+    [SerializeField] private float     explosionRadius = 4f;
+    [SerializeField] private float     explosionDamage = 50f;
+    [SerializeField] private PooledVFX explosionVFX;
 
     private bool _exploded;
     private Collider _coreCollider;
@@ -30,6 +31,9 @@ public class BombAttackBehaviour : MonoBehaviour, IEnemyAttack
     private void Explode(Vector3 center)
     {
         _exploded = true;
+
+        if (explosionVFX != null && VFXPool.Instance != null)
+            VFXPool.Instance.Play(center, Quaternion.identity, explosionVFX);
 
         Collider[] hits = Physics.OverlapSphere(center, explosionRadius);
         IDamageable self = GetComponentInParent<IDamageable>();
