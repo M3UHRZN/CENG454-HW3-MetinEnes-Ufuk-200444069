@@ -6,6 +6,7 @@ public static class GameEventBus
     public static event Action<float, float> OnCoreDamaged;
     public static event Action<float, float> OnPlayerDamaged;
     public static event Action<int, string> OnEnemyDied;
+    public static event Action<string> OnWeaponFired;
     public static event Action<int> OnWaveCompleted;
     public static event Action<bool> OnGameOver;
 
@@ -37,5 +38,10 @@ public static class GameEventBus
     {
         Debug.Log($"[GameEventBus] GameOver → Player Won: {playerWon}");
         OnGameOver?.Invoke(playerWon);
+    }
+
+    public static void RaiseWeaponFired(string shooterName)
+    {
+        OnWeaponFired?.Invoke(shooterName);
     }
 }

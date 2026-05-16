@@ -6,6 +6,8 @@ public class AudioManager : MonoBehaviour
 
     [SerializeField] private AudioClip enemyDeathClip;
     [SerializeField] private AudioClip coreDamagedClip;
+    [SerializeField] private AudioClip playerFireClip;
+    [SerializeField] private AudioClip enemyFireClip;
 
     private AudioSource audioSource;
 
@@ -27,14 +29,23 @@ public class AudioManager : MonoBehaviour
 
     private void OnEnable()
     {
-        GameEventBus.OnEnemyDied   += HandleEnemyDied;
-        GameEventBus.OnCoreDamaged += HandleCoreDamaged;
+        GameEventBus.OnEnemyDied    += HandleEnemyDied;
+        GameEventBus.OnCoreDamaged  += HandleCoreDamaged;
+        GameEventBus.OnWeaponFired  += HandleWeaponFired;
     }
 
     private void OnDisable()
     {
-        GameEventBus.OnEnemyDied   -= HandleEnemyDied;
-        GameEventBus.OnCoreDamaged -= HandleCoreDamaged;
+        GameEventBus.OnEnemyDied    -= HandleEnemyDied;
+        GameEventBus.OnCoreDamaged  -= HandleCoreDamaged;
+        GameEventBus.OnWeaponFired  -= HandleWeaponFired;
+    }
+
+    private void HandleWeaponFired(string shooterName)
+    {
+        AudioClip clip = shooterName == "Player" ? playerFireClip : enemyFireClip;
+        if (clip != null)
+            audioSource.PlayOneShot(clip);
     }
 
     private void HandleEnemyDied(int killCount, string killerName)

@@ -23,5 +23,7 @@ public class EnemyWeapon : MonoBehaviour, IWeapon
 
         Vector3 origin = transform.position + Vector3.up * fireHeight;
         BulletPool.Instance.Launch(origin, direction, gameObject.name, bulletPrefab);
+
+        GameEventBus.RaiseWeaponFired(gameObject.name);
     }
 }

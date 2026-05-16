@@ -17,5 +17,7 @@ public class BaseWeapon : MonoBehaviour, IWeapon
 
         if (muzzleVFX != null && VFXPool.Instance != null)
             VFXPool.Instance.Play(transform.position, Quaternion.LookRotation(direction), muzzleVFX);
+
+        GameEventBus.RaiseWeaponFired(ShooterName);
     }
 }
