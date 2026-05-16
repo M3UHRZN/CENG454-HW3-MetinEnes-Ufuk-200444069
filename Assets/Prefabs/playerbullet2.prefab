@@ -693,7 +693,7 @@ MonoBehaviour:
   speed: 60
   lifetime: 0.5
   damage: 30
-  hitVFX: {fileID: 3881016984013082835, guid: 4543ab5e3d405ec40a8d4e9aa5165030, type: 3}
+  hitVFX: {fileID: 970695113627179531, guid: 28848f5e802bcd1469be351523191a01, type: 3}
 --- !u!1 &8360015190778562393
 GameObject:
   m_ObjectHideFlags: 0
