@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6150506184718191897}
+  - component: {fileID: 5593333181335257916}
   - component: {fileID: 8888788264336225428}
   - component: {fileID: -6495875730550442189}
-  - component: {fileID: 7547027287896430140}
   m_Layer: 0
   m_Name: PlayerBullet
   m_TagString: Untagged
@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1005712161589740301}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -35,7 +35,28 @@ Transform:
   - {fileID: 6868152170757488631}
   - {fileID: 4312850912196504764}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &5593333181335257916
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1005712161589740301}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 640
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.2, y: 0.2, z: 0.56}
+  m_Center: {x: 0, y: 0, z: 0.2}
 --- !u!54 &8888788264336225428
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -58,10 +79,10 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!114 &-6495875730550442189
 MonoBehaviour:
@@ -79,29 +100,6 @@ MonoBehaviour:
   lifetime: 1
   damage: 10
   hitVFX: {fileID: 970695113627179531, guid: 28848f5e802bcd1469be351523191a01, type: 3}
---- !u!136 &7547027287896430140
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1005712161589740301}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 640
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.22
-  m_Height: 1.0478983
-  m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 0.3}
 --- !u!1 &1589231455459301005
 GameObject:
   m_ObjectHideFlags: 0
@@ -261,43 +259,43 @@ MonoBehaviour:
   - m_Vertices: 070000000a0000000c0000000f000000
   m_SharedTextures: []
   m_Positions:
-  - {x: 0.1, y: -0.14444137, z: 0}
-  - {x: -0.05000001, y: -0.14444137, z: 0.08660254}
-  - {x: 0, y: 0.85555863, z: 0}
-  - {x: 0.1, y: -0.14444137, z: 0}
-  - {x: -0.05000001, y: -0.14444137, z: 0.08660254}
-  - {x: 0, y: -0.14444137, z: 0}
-  - {x: -0.05000001, y: -0.14444137, z: 0.08660254}
-  - {x: -0.049999993, y: -0.14444137, z: -0.086602546}
-  - {x: 0, y: 0.85555863, z: 0}
-  - {x: -0.05000001, y: -0.14444137, z: 0.08660254}
-  - {x: -0.049999993, y: -0.14444137, z: -0.086602546}
-  - {x: 0, y: -0.14444137, z: 0}
-  - {x: -0.049999993, y: -0.14444137, z: -0.086602546}
-  - {x: 0.1, y: -0.14444137, z: 0}
-  - {x: 0, y: 0.85555863, z: 0}
-  - {x: -0.049999993, y: -0.14444137, z: -0.086602546}
-  - {x: 0.1, y: -0.14444137, z: 0}
-  - {x: 0, y: -0.14444137, z: 0}
+  - {x: 0.1, y: -0.1444413, z: -0.00000001258357}
+  - {x: -0.05000001, y: -0.1444413, z: 0.086602524}
+  - {x: 0, y: 0.8555587, z: -0.00000001258357}
+  - {x: 0.1, y: -0.1444413, z: -0.00000001258357}
+  - {x: -0.05000001, y: -0.1444413, z: 0.086602524}
+  - {x: 0, y: -0.1444413, z: -0.00000001258357}
+  - {x: -0.05000001, y: -0.1444413, z: 0.086602524}
+  - {x: -0.049999993, y: -0.1444413, z: -0.08660256}
+  - {x: 0, y: 0.8555587, z: -0.00000001258357}
+  - {x: -0.05000001, y: -0.1444413, z: 0.086602524}
+  - {x: -0.049999993, y: -0.1444413, z: -0.08660256}
+  - {x: 0, y: -0.1444413, z: -0.00000001258357}
+  - {x: -0.049999993, y: -0.1444413, z: -0.08660256}
+  - {x: 0.1, y: -0.1444413, z: -0.00000001258357}
+  - {x: 0, y: 0.8555587, z: -0.00000001258357}
+  - {x: -0.049999993, y: -0.1444413, z: -0.08660256}
+  - {x: 0.1, y: -0.1444413, z: -0.00000001258357}
+  - {x: 0, y: -0.1444413, z: -0.00000001258357}
   m_Textures0:
   - {x: 0, y: 0}
   - {x: 0.34641016, y: 0}
   - {x: 0.17320508, y: 1.0049876}
-  - {x: -0.1, y: 0}
-  - {x: 0.05000001, y: 0.08660254}
-  - {x: 0, y: 0}
-  - {x: 0, y: 0}
-  - {x: 0.34641016, y: 0}
-  - {x: 0.17320508, y: 1.0049876}
-  - {x: 0.05000001, y: 0.08660254}
-  - {x: 0.049999993, y: -0.086602546}
-  - {x: 0, y: 0}
+  - {x: -0.1, y: -0.00000001258357}
+  - {x: 0.05000001, y: 0.086602524}
+  - {x: -0, y: -0.00000001258357}
   - {x: 0, y: 0}
   - {x: 0.34641016, y: 0}
   - {x: 0.17320508, y: 1.0049876}
-  - {x: 0.049999993, y: -0.086602546}
-  - {x: -0.1, y: 0}
+  - {x: 0.05000001, y: 0.086602524}
+  - {x: 0.049999993, y: -0.08660256}
+  - {x: -0, y: -0.00000001258357}
   - {x: 0, y: 0}
+  - {x: 0.34641016, y: 0}
+  - {x: 0.17320508, y: 1.0049876}
+  - {x: 0.049999993, y: -0.08660256}
+  - {x: -0.1, y: -0.00000001258357}
+  - {x: -0, y: -0.00000001258357}
   m_Textures2: []
   m_Textures3: []
   m_Tangents:
@@ -328,7 +326,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2209
+  m_VersionIndex: 2220
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -348,9 +346,9 @@ MonoBehaviour:
   m_Shape:
     rid: 1075118210384134427
   m_ShapeRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_UnmodifiedMeshVersion: 2179
+  m_UnmodifiedMeshVersion: 2220
   m_Size: {x: 0.2, y: 1, z: 0.2}
-  m_LocalCenter: {x: 0, y: 0.35555863, z: 0}
+  m_LocalCenter: {x: 0, y: 0.3555587, z: 0}
   references:
     version: 2
     RefIds:
@@ -443,7 +441,7 @@ Transform:
   m_GameObject: {fileID: 3248003428261778529}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.091, y: 0.25, z: 0.28}
+  m_LocalPosition: {x: 0.002, y: 0.054, z: 0.007}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
