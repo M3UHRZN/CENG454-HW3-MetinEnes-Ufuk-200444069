@@ -2766,7 +2766,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0471b3297a2867a4c8ffd31891cca90b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
-  enemyDeathClip: {fileID: 8300000, guid: d3fb6a491ddf8f6499dfa21153ffbf78, type: 3}
+  enemyDeathClip: {fileID: 8300000, guid: 808d230664c90eb45ab47f6463b3732e, type: 3}
   coreDamagedClip: {fileID: 8300000, guid: b2b7db315bb39a24fba19545f0952f64, type: 3}
   playerFireClip: {fileID: 8300000, guid: 3af01ae79cfbd504f938f5b4bc7db1db, type: 3}
   enemyFireClip: {fileID: 8300000, guid: 0beb234c9a669e44499cbf6cc6d3325d, type: 3}
